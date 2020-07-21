@@ -1,5 +1,8 @@
 package gui;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +19,7 @@ public class LoginVerify {
     public boolean businessVerify(int businessID, String businessPassword){
 
         con = JDBConnection.getConnection();
+        businessPassword = toMd5(businessPassword);
 
         String select="SELECT * FROM BUSINESS WHERE idBUSINESS='"+businessID+"' and businessPassword='"+businessPassword+"'";
         boolean isVerifyBusiness=false;
@@ -36,6 +40,7 @@ public class LoginVerify {
     public boolean adminVerify(int adminID, String adminPassword){
 
         con = JDBConnection.getConnection();
+        adminPassword = toMd5(adminPassword);
 
         String select="SELECT * FROM ADMINISTRATOR WHERE idADMINISTRATOR='"+adminID+"' and administratorPassword='"+adminPassword+"'";
         boolean isVerifyUser=false;
@@ -52,4 +57,21 @@ public class LoginVerify {
 
         return isVerifyUser;
     }
+    
+    public static String toMd5(String info) {
+
+        byte[] secretByte;
+        try {
+            secretByte = MessageDigest.getInstance("md5")
+                    .digest(info.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("找不到md5算法");
+        }
+        StringBuilder md5Code = new StringBuilder(new BigInteger(1, secretByte).toString(16));
+        for (int i = 0; i < 32 - md5Code.length(); i++) {
+            md5Code.insert(0, "0");
+        }
+        return md5Code.toString();
+    }
+
 }

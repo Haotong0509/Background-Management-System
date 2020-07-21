@@ -3,6 +3,10 @@ package function;
 import connection.JDBConnection;
 
 import javax.swing.*;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Scanner;
 import java.util.Vector;
@@ -17,7 +21,7 @@ public class Business {
 
         idBUSINESS = Integer.parseInt(tf1.getText());
         businessName = tf2.getText();
-        businessPassword = tf3.getText();
+        businessPassword = toMd5(tf3.getText());
 
         String sql = "insert into business(idBUSINESS, businessPassword, businessName) values(?, ?, ?)";
         try {
@@ -32,6 +36,22 @@ public class Business {
         } finally {
             JDBConnection.closeConnection(con);
         }
+    }
+    
+    public static String toMd5(String info) {
+
+        byte[] secretByte;
+        try {
+            secretByte = MessageDigest.getInstance("md5")
+                    .digest(info.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("找不到md5算法");
+        }
+        StringBuilder md5Code = new StringBuilder(new BigInteger(1, secretByte).toString(16));
+        for (int i = 0; i < 32 - md5Code.length(); i++) {
+            md5Code.insert(0, "0");
+        }
+        return md5Code.toString();
     }
 
     public void DeleteBusiness(JTextField tf1) {
@@ -55,7 +75,7 @@ public class Business {
 
         idBUSINESS = Integer.parseInt(tf1.getText());
         businessName = tf2.getText();
-        businessPassword = tf3.getText();
+        businessPassword = toMd5(tf3.getText());
 
         try {
             con = JDBConnection.getConnection();
@@ -125,5 +145,7 @@ public class Business {
             JDBConnection.closeConnection(con);
         }
     }
+    
+    
 
 }

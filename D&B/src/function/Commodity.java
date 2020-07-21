@@ -59,7 +59,7 @@ public class Commodity {
         }
     }
 
-    public void UpdateCommodity(JTextField tf1, JTextField tf2, JTextField tf3, JTextField tf4, JTextField tf5, JTextField tf6) {
+    public void UpdateCommodity(JTextField tf1, JTextField tf2, JTextField tf3, JTextField tf4, JTextField tf5) {
         int commodityID;
         String name, coarseClass, fineClass, description;
         int businessID;
@@ -71,20 +71,20 @@ public class Commodity {
         coarseClass = tf4.getText();
         fineClass = tf5.getText();
         description = "null";
-        businessID = Integer.parseInt(tf6.getText());
+//        businessID = Integer.parseInt(tf6.getText());
 
         try {
             con = JDBConnection.getConnection();
             String sql = "update commodity set itemName = ?, price = ?, coarseClass = ?, " +
-                    "fineClass = ?, description = ?, BUSINESS_idBUSINESS = ? where idCOMMODITY = ?";
+                    "fineClass = ?, description = ? where idCOMMODITY = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setFloat(2, price);
             preparedStatement.setString(3, coarseClass);
             preparedStatement.setString(4, fineClass);
             preparedStatement.setString(5, description);
-            preparedStatement.setInt(6, businessID);
-            preparedStatement.setInt(7, commodityID);
+//            preparedStatement.setInt(6, businessID);
+            preparedStatement.setInt(6, commodityID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

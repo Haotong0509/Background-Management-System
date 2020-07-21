@@ -47,7 +47,7 @@ public class AdminJFrame extends JFrame{
                 button13ActionPerformed(event);
             }
         });
-        JButton button14 = new JButton("更改用户");
+        JButton button14 = new JButton("重置密码");
         button14.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 button14ActionPerformed(event);
@@ -269,7 +269,7 @@ public class AdminJFrame extends JFrame{
 
     private void button14ActionPerformed(ActionEvent event) {
     	JFrame newJFrame = new JFrame();
-        newJFrame.setTitle("用户管理-更改用户");
+        newJFrame.setTitle("用户管理-重置密码");
         newJFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newJFrame.setBounds(300, 170, 300, 250);
         newJFrame.setLocationRelativeTo(null);
@@ -290,9 +290,9 @@ public class AdminJFrame extends JFrame{
         JPanel button12JPanel2 = new JPanel();
         button12JPanel2.setLayout(new FlowLayout());
         button12JPanel.add(button12JPanel2);
-        JPanel button12JPanel3 = new JPanel();
-        button12JPanel3.setLayout(new FlowLayout());
-        button12JPanel.add(button12JPanel3);
+//        JPanel button12JPanel3 = new JPanel();
+//        button12JPanel3.setLayout(new FlowLayout());
+//        button12JPanel.add(button12JPanel3);
         JPanel button12JPanel7 = new JPanel();
         button12JPanel7.setLayout(new FlowLayout());
         button12JPanel.add(button12JPanel7);
@@ -301,13 +301,14 @@ public class AdminJFrame extends JFrame{
         JTextField userIDJTextField = new JTextField(10);
         button12JPanel1.add(userIDJTextField);
 
-        button12JPanel2.add(new JLabel("用户名"));
-        JTextField userNameJTextField = new JTextField(10);
-        button12JPanel2.add(userNameJTextField);
-
-        button12JPanel3.add(new JLabel("用户密码"));
-        JTextField userPasswordJTextField = new JTextField(10);
-        button12JPanel3.add(userPasswordJTextField);
+        JLabel resultJLabel = new JLabel();
+        button12JPanel2.add(resultJLabel);
+//        JTextField userNameJTextField = new JTextField(10);
+//        button12JPanel2.add(userNameJTextField);
+//
+//        button12JPanel3.add(new JLabel("用户密码"));
+//        JTextField userPasswordJTextField = new JTextField(10);
+//        button12JPanel3.add(userPasswordJTextField);
 
         JButton confirmButton = new JButton("确认");
         button12JPanel7.add(confirmButton);
@@ -315,7 +316,7 @@ public class AdminJFrame extends JFrame{
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 User user = new User();
-                user.UpdateUser(userIDJTextField, userNameJTextField, userPasswordJTextField);
+                user.UpdateUser(userIDJTextField, resultJLabel);
             }
         });
     }
@@ -474,7 +475,7 @@ public class AdminJFrame extends JFrame{
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 Business business = new Business();
-                business.AddBusiness(businessIDJTextField, businessNameJTextField, businessPasswordJTextField);
+                business.UpdateBusiness(businessIDJTextField, businessNameJTextField, businessPasswordJTextField);
             }
         });
     }

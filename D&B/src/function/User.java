@@ -3,9 +3,16 @@ package function;
 import connection.JDBConnection;
 
 import javax.swing.*;
+
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.Random;
 
 public class User {
 
@@ -17,7 +24,7 @@ public class User {
 
         idUSER = Integer.parseInt(tf1.getText());
         userName = tf2.getText();
-        userPassword = tf3.getText();
+        userPassword = toMd5(tf3.getText());
         String sql = "insert into user(idUSER, userName, userPassword) values(?, ?, ?)";
         try {
             con = JDBConnection.getConnection();
@@ -32,6 +39,22 @@ public class User {
             JDBConnection.closeConnection(con);
         }
         System.out.println("Successfully Added");
+    }
+    
+    public static String toMd5(String info) {
+
+        byte[] secretByte;
+        try {
+            secretByte = MessageDigest.getInstance("md5")
+                    .digest(info.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("找不到md5算法");
+        }
+        StringBuilder md5Code = new StringBuilder(new BigInteger(1, secretByte).toString(16));
+        for (int i = 0; i < 32 - md5Code.length(); i++) {
+            md5Code.insert(0, "0");
+        }
+        return md5Code.toString();
     }
 
     public void DeleteUser(JTextField tf1) {
@@ -49,20 +72,38 @@ public class User {
         }
     }
 
-    public void UpdateUser(JTextField tf1, JTextField tf2, JTextField tf3) {
+//    public void UpdateUser(JTextField tf1, JTextField tf2, JTextField tf3) {
+//        int idUSER = Integer.parseInt(tf1.getText());
+//        String userPassword, userName;
+//
+//        userName = tf2.getText();
+//        userPassword = tf3.getText();
+//
+//        try {
+//            con = JDBConnection.getConnection();
+//            String sql = "update user set userName = ?, userPassword = ? where idUSER = ?";
+//            PreparedStatement preparedStatement = con.prepareStatement(sql);
+//            preparedStatement.setString(1, userName);
+//            preparedStatement.setString(2, userPassword);
+//            preparedStatement.setInt(3, idUSER);
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            JDBConnection.closeConnection(con);
+//        }
+//    }
+    public void UpdateUser(JTextField tf1, JLabel resultJLabel) {
         int idUSER = Integer.parseInt(tf1.getText());
-        String userPassword, userName;
-
-        userName = tf2.getText();
-        userPassword = tf3.getText();
-
+        String userPassword = RandomString(6);        //随机生成6位密码
+        resultJLabel.setText("密码重置为：" + userPassword);
+        userPassword = toMd5(userPassword);		//进行md5加密
         try {
             con = JDBConnection.getConnection();
-            String sql = "update user set userName = ?, userPassword = ? where idUSER = ?";
+            String sql = "update user set userPassword = ? where idUSER = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, userName);
-            preparedStatement.setString(2, userPassword);
-            preparedStatement.setInt(3, idUSER);
+            preparedStatement.setString(1, userPassword);
+            preparedStatement.setInt(2, idUSER);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,6 +111,25 @@ public class User {
             JDBConnection.closeConnection(con);
         }
     }
+    
+    public static String RandomString(int length) {
+        String alphabetsInUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String alphabetsInLowerCase = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        Random random = new Random();
+        // create a super set of all characters
+        String allCharacters = alphabetsInLowerCase + alphabetsInUpperCase + numbers;
+        // initialize a string to hold result
+        StringBuffer randomString = new StringBuffer();
+        // loop for 10 times
+        for (int i = 0; i < length; i++) {
+            // generate a random number between 0 and length of all characters 
+            int randomIndex = random.nextInt(allCharacters.length());
+            // retrieve character at index and add it to result
+            randomString.append(allCharacters.charAt(randomIndex));
+        }
+        return randomString.toString();
+   }
 
     public void QueryUser(JPanel newJPanel) {
     	

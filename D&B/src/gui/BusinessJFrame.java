@@ -241,7 +241,7 @@ public class BusinessJFrame extends JFrame{
         newJPanel.add(new JLabel(" "), BorderLayout.NORTH);
 
         JPanel button12JPanel = new JPanel();
-        button12JPanel.setLayout(new GridLayout(7,1));
+        button12JPanel.setLayout(new GridLayout(6,1));
         newJPanel.add(button12JPanel, BorderLayout.CENTER);
          
         JPanel button12JPanel1 = new JPanel();
@@ -259,9 +259,9 @@ public class BusinessJFrame extends JFrame{
         JPanel button12JPanel5 = new JPanel();
         button12JPanel5.setLayout(new FlowLayout());
         button12JPanel.add(button12JPanel5);
-        JPanel button12JPanel6 = new JPanel();
-        button12JPanel6.setLayout(new FlowLayout());
-        button12JPanel.add(button12JPanel6);
+//        JPanel button12JPanel6 = new JPanel();
+//        button12JPanel6.setLayout(new FlowLayout());
+//        button12JPanel.add(button12JPanel6);
         JPanel button12JPanel7 = new JPanel();
         button12JPanel7.setLayout(new FlowLayout());
         button12JPanel.add(button12JPanel7);
@@ -286,9 +286,9 @@ public class BusinessJFrame extends JFrame{
         JTextField commodityFCJTextField = new JTextField(10);
         button12JPanel5.add(commodityFCJTextField);
         
-        button12JPanel6.add(new JLabel("商家ID"));
-        JTextField commodityBIDJTextField = new JTextField(10);
-        button12JPanel6.add(commodityBIDJTextField);
+//        button12JPanel6.add(new JLabel("商家ID"));
+//        JTextField commodityBIDJTextField = new JTextField(10);
+//        button12JPanel6.add(commodityBIDJTextField);
 
         JButton confirmButton = new JButton("确认");
         button12JPanel7.add(confirmButton);
@@ -297,7 +297,7 @@ public class BusinessJFrame extends JFrame{
             public void actionPerformed(ActionEvent event) {
                 Commodity commodity = new Commodity();
                 commodity.UpdateCommodity(commodityIDJTextField, commodityNameJTextField, commodityPriceJTextField,
-                        commodityCCJTextField, commodityFCJTextField, commodityBIDJTextField);
+                        commodityCCJTextField, commodityFCJTextField);
             }
         });
     }
